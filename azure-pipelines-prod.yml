@@ -1,0 +1,48 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  tags:
+    include:
+      - dev-deployment*
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - script: echo Deployment Started,
+      apt-get update -qy
+      apt-get -y install zip unzip
+      apt-get install sshpass
+    displayName: "Installing zip and sshpass"
+
+  - script: |
+      echo Add other tasks to build, test, and deploy your project.
+      echo See https://aka.ms/yaml
+    displayName: "Run a multi-line script"
+  - task: CopyFiles@2
+    inputs:
+      Contents: "**"
+      TargetFolder: '$(Build.ArtifactStagingDirectory)\SafeDrive'
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(Build.ArtifactStagingDirectory)\SafeDrive'
+      includeRootFolder: true
+      archiveType: "zip"
+      archiveFile: "$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip"
+      replaceExistingArchive: true
+  # - task: PowerShell@2
+  #   inputs:
+  #     targetType: 'inline'
+  #     script: 'ssh $username@$hostname -p "$username"'
+
+  - script: |
+      mkdir .web
+      cp -r * .web
+      mv .web web
+      zip -r web.zip web
+      sshpass -p $(password) scp -o StrictHostKeyChecking=no web.zip $(username)@$(hostname):~
+      sshpass -p $(password) ssh -o StrictHostKeyChecking=no $(username)@$(hostname) "sudo mv ~/web.zip $(folderLocation)/ ; cd $(folderLocation); sudo unzip -o web.zip; sudo rsync -qar web/ . ; sudo chown -R $(folder_owner):$(folder_group) $(folderLocation); sudo chmod -R 755 $(folderLocation); sudo php artisan migrate; sudo composer install; sudo rm -rf web*; exit; exit;"
+    displayName: "Creating zip and copying to the server"
