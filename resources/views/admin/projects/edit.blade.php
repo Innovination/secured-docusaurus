@@ -31,16 +31,6 @@
                 <span class="help-block">{{ trans('cruds.project.fields.slug_helper') }}</span>
             </div>
             <div class="form-group">
-                <label class="required" for="token">{{ trans('cruds.project.fields.token') }}</label>
-                <input class="form-control {{ $errors->has('token') ? 'is-invalid' : '' }}" type="text" name="token" id="token" value="{{ old('token', $project->token) }}" required>
-                @if($errors->has('token'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('token') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.project.fields.token_helper') }}</span>
-            </div>
-            <div class="form-group">
                 <label for="allowed_users">{{ trans('cruds.project.fields.allowed_users') }}</label>
                 <div style="padding-bottom: 4px">
                     <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
