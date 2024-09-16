@@ -12,7 +12,7 @@ class CreateProjectsTable extends Migration
             $table->bigIncrements('id');
             $table->string('project_name')->unique();
             $table->string('slug')->unique();
-            $table->string('folder')->unique();
+            $table->string('token')->unique();
             $table->timestamps();
             $table->softDeletes();
         });

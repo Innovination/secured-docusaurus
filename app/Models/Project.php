@@ -22,7 +22,7 @@ class Project extends Model
     protected $fillable = [
         'project_name',
         'slug',
-        'folder',
+        'token',
         'created_at',
         'updated_at',
         'deleted_at',

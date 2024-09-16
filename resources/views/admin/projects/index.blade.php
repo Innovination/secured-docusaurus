@@ -31,7 +31,7 @@
                         {{ trans('cruds.project.fields.slug') }}
                     </th>
                     <th>
-                        {{ trans('cruds.project.fields.folder') }}
+                        {{ trans('cruds.project.fields.token') }}
                     </th>
                     <th>
                         {{ trans('cruds.project.fields.allowed_users') }}
@@ -121,7 +121,7 @@
 { data: 'id', name: 'id' },
 { data: 'project_name', name: 'project_name' },
 { data: 'slug', name: 'slug' },
-{ data: 'folder', name: 'folder' },
+{ data: 'token', name: 'token' },
 { data: 'allowed_users', name: 'allowed_users.name' },
 { data: 'actions', name: '{{ trans('global.actions') }}' }
     ],

@@ -27,11 +27,6 @@ class StoreProjectRequest extends FormRequest
                 'required',
                 'unique:projects',
             ],
-            'folder' => [
-                'string',
-                'required',
-                'unique:projects',
-            ],
             'allowed_users.*' => [
                 'integer',
             ],

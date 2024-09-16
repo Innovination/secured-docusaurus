@@ -31,7 +31,7 @@
                             {{ trans('cruds.project.fields.slug') }}
                         </th>
                         <th>
-                            {{ trans('cruds.project.fields.folder') }}
+                            {{ trans('cruds.project.fields.token') }}
                         </th>
                         <th>
                             {{ trans('cruds.project.fields.allowed_users') }}
@@ -57,7 +57,7 @@
                                 {{ $project->slug ?? '' }}
                             </td>
                             <td>
-                                {{ $project->folder ?? '' }}
+                                {{ $project->token ?? '' }}
                             </td>
                             <td>
                                 @foreach($project->allowed_users as $key => $item)

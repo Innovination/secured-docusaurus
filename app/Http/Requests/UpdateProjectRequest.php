@@ -27,11 +27,6 @@ class UpdateProjectRequest extends FormRequest
                 'required',
                 'unique:projects,slug,' . request()->route('project')->id,
             ],
-            'folder' => [
-                'string',
-                'required',
-                'unique:projects,folder,' . request()->route('project')->id,
-            ],
             'allowed_users.*' => [
                 'integer',
             ],

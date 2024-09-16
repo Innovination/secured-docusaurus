@@ -10,7 +10,7 @@ use App\Models\Project;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\File;
 
@@ -20,16 +20,9 @@ class ProjectController extends Controller
     public function loadProject($projectName)
     {
         // Define the path to the index.html based on the project name
-        $filePath = public_path('static/' . $projectName . '/index.html');
-
-        // Check if the file exists
-        if (File::exists($filePath)) {
-            // Return the index.html content
-            return Response::file($filePath);
-        } else {
-            // If the file doesn't exist, show a 404 error
-            abort(404, 'Project not found.');
-        }
+        // $filePath = public_path('static/' . $projectName . '/index.html');
+        $filePath = url('/') . '/static/' . $projectName . '/index.html';
+        return view('admin.projects.detail', compact('filePath'));
     }
 
     public function index(Request $request)
@@ -67,8 +60,8 @@ class ProjectController extends Controller
             $table->editColumn('slug', function ($row) {
                 return $row->slug ? $row->slug : '';
             });
-            $table->editColumn('folder', function ($row) {
-                return $row->folder ? $row->folder : '';
+            $table->editColumn('token', function ($row) {
+                return $row->token ? $row->token : '';
             });
             $table->editColumn('allowed_users', function ($row) {
                 $labels = [];
