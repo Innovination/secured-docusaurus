@@ -17,11 +17,23 @@ use Illuminate\Support\Facades\File;
 class ProjectController extends Controller
 {
 
-    public function loadProject($projectName)
+    public function loadProject($slug)
     {
         // Define the path to the index.html based on the project name
-        // $filePath = public_path('static/' . $projectName . '/index.html');
-        $filePath = url('/') . '/static/' . $projectName . '/index.html';
+    
+        $project = Project::where('slug', $slug)->first();
+    
+        if (!$project) {
+            return redirect()->route('admin.projects.index');
+        }
+    
+        // Check if the logged-in user is allowed in this project
+        $user = auth()->user();
+        if (!$project->allowed_users->contains($user)) {
+            return redirect()->route('admin.projects.index');
+        }
+    
+        $filePath = url('/') . '/token/' . $project->token . '/index.html';
         return view('admin.projects.detail', compact('filePath'));
     }
 

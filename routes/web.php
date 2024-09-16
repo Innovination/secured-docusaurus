@@ -29,7 +29,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('projects/destroy', 'ProjectController@massDestroy')->name('projects.massDestroy');
     Route::resource('projects', 'ProjectController');
 
-    Route::get('/project/{projectName}', 'ProjectController@loadProject');
+    Route::get('/project/{slug}', 'ProjectController@loadProject');
 
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {

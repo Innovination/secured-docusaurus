@@ -16,4 +16,5 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-/public/static
+/public/token/
+.DS_Store
