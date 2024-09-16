@@ -31,9 +31,6 @@
                         {{ trans('cruds.project.fields.slug') }}
                     </th>
                     <th>
-                        {{ trans('cruds.project.fields.token') }}
-                    </th>
-                    <th>
                         {{ trans('cruds.project.fields.allowed_users') }}
                     </th>
                     <th>
@@ -42,9 +39,6 @@
                 </tr>
                 <tr>
                     <td>
-                    </td>
-                    <td>
-                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
                     </td>
                     <td>
                         <input class="search" type="text" placeholder="{{ trans('global.search') }}">
@@ -120,8 +114,13 @@
       { data: 'placeholder', name: 'placeholder' },
 { data: 'id', name: 'id' },
 { data: 'project_name', name: 'project_name' },
-{ data: 'slug', name: 'slug' },
-{ data: 'token', name: 'token' },
+{ 
+    data: 'slug', 
+    name: 'slug',
+    render: function ( data, type, row ) {
+        return '<a href="/admin/project/' + row.slug + '" target="_blank">' + data + '</a>';
+    }
+},
 { data: 'allowed_users', name: 'allowed_users.name' },
 { data: 'actions', name: '{{ trans('global.actions') }}' }
     ],

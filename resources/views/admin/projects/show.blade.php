@@ -1,14 +1,73 @@
-<!-- resources/views/projects/show.blade.php -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $projectName }} Documentation</title>
-    <link rel="stylesheet" href="{{ asset('static/' . $projectName . '/css/style.css') }}">
-</head>
-<body>
-    <h1>Welcome to {{ $projectName }} Documentation</h1>
-    <script src="{{ asset('static/' . $projectName . '/js/app.js') }}"></script>
-</body>
-</html>
+@extends('layouts.admin')
+@section('content')
+
+<div class="card">
+    <div class="card-header">
+        {{ trans('global.show') }} {{ trans('cruds.project.title') }}
+    </div>
+
+    <div class="card-body">
+        <div class="form-group">
+            <div class="form-group">
+                <a class="btn btn-default" href="{{ route('admin.projects.index') }}">
+                    {{ trans('global.back_to_list') }}
+                </a>
+            </div>
+            <table class="table table-bordered table-striped">
+                <tbody>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.project.fields.id') }}
+                        </th>
+                        <td>
+                            {{ $project->id }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.project.fields.project_name') }}
+                        </th>
+                        <td>
+                            {{ $project->project_name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.project.fields.slug') }}
+                        </th>
+                        <td>
+                            {{ $project->slug }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.project.fields.token') }}
+                        </th>
+                        <td>
+                            {{ $project->token }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.project.fields.allowed_users') }}
+                        </th>
+                        <td>
+                            @foreach($project->allowed_users as $key => $allowed_users)
+                                <span class="label label-info">{{ $allowed_users->name }}</span>
+                            @endforeach
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="form-group">
+                <a class="btn btn-default" href="{{ route('admin.projects.index') }}">
+                    {{ trans('global.back_to_list') }}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@endsection
