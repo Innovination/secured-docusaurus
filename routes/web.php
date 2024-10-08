@@ -27,6 +27,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // Project
     Route::delete('projects/destroy', 'ProjectController@massDestroy')->name('projects.massDestroy');
+    Route::get('/projects/admin_view', 'ProjectController@admin_view')->name('projects.admin_view');
     Route::resource('projects', 'ProjectController');
 
     Route::get('/project/{slug}', 'ProjectController@loadProject');

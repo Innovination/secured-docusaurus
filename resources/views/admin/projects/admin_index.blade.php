@@ -109,7 +109,7 @@
     serverSide: true,
     retrieve: true,
     aaSorting: [],
-    ajax: "{{ route('admin.projects.index') }}",
+    ajax: "{{ route('admin.projects.admin_view') }}",
     columns: [
       { data: 'placeholder', name: 'placeholder' },
 { data: 'id', name: 'id' },

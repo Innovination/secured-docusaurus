@@ -63,7 +63,17 @@
                     <i class="fa-fw fas fa-cogs c-sidebar-nav-icon">
 
                     </i>
-                    {{ trans('cruds.project.title') }}
+                    Assigned {{ trans('cruds.project.title') }}s
+                </a>
+            </li>
+        @endcan
+        @can('project_admin_access')
+            <li class="c-sidebar-nav-item">
+                <a href="{{ route("admin.projects.admin_view") }}" class="c-sidebar-nav-link {{ request()->is("admin/projects") || request()->is("admin/projects/*") ? "c-active" : "" }}">
+                    <i class="fa-fw fas fa-cogs c-sidebar-nav-icon">
+
+                    </i>
+                    All {{ trans('cruds.project.title') }}s (Admin)
                 </a>
             </li>
         @endcan
