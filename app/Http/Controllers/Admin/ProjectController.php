@@ -8,11 +8,13 @@ use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
 use App\Models\User;
-use Gate;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+
 
 class ProjectController extends Controller
 {
@@ -20,19 +22,19 @@ class ProjectController extends Controller
     public function loadProject($slug)
     {
         // Define the path to the index.html based on the project name
-    
+
         $project = Project::where('slug', $slug)->first();
-    
+
         if (!$project) {
             return redirect()->route('admin.projects.index');
         }
-    
+
         // Check if the logged-in user is allowed in this project
         $user = auth()->user();
         if (!$project->allowed_users->contains($user)) {
             return redirect()->route('admin.projects.index');
         }
-    
+
         $filePath = url('/') . '/token/' . $project->token . '/index.html';
         return view('admin.projects.detail', compact('filePath'));
     }
@@ -162,9 +164,20 @@ class ProjectController extends Controller
         return view('admin.projects.create', compact('allowed_users'));
     }
 
+    // public function store(StoreProjectRequest $request)
+    // {
+    //     $project = Project::create($request->all());
+    //     $project->allowed_users()->sync($request->input('allowed_users', []));
+
+    //     return redirect()->route('admin.projects.index');
+    // }
+
     public function store(StoreProjectRequest $request)
     {
-        $project = Project::create($request->all());
+        $projectData = $request->all();
+        $projectData['token'] = Str::random(12);
+
+        $project = Project::create($projectData);
         $project->allowed_users()->sync($request->input('allowed_users', []));
 
         return redirect()->route('admin.projects.index');
