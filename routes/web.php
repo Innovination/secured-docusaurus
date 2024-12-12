@@ -31,7 +31,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('projects', 'ProjectController');
 
     Route::get('/project/{slug}', 'ProjectController@loadProject');
-
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
     // Change password
@@ -41,4 +40,14 @@ Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 
         Route::post('profile', 'ChangePasswordController@updateProfile')->name('password.updateProfile');
         Route::post('profile/destroy', 'ChangePasswordController@destroy')->name('password.destroyProfile');
     }
+});
+
+
+
+//only for developers
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
+
+    Route::get('/admin/run-migrate',  'MaintainanceController@runMigrate')->name('run.migrate');
+    Route::get('/admin/cache-clear',  'MaintainanceController@cacheClear')->name('cache.clear');
+    Route::get('/admin/composer-install',  'MaintainanceController@composerInstall')->name('composer.install');
 });
