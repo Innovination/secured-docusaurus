@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label class="required" for="slug">{{ trans('cruds.project.fields.slug') }}</label>
                     <input class="form-control {{ $errors->has('slug') ? 'is-invalid' : '' }}" type="text" name="slug"
-                        id="slug" value="{{ old('slug', '') }}" required>
+                        id="slug" value="{{ old('slug', '') }}" readonly required>
                     @if ($errors->has('slug'))
                         <div class="invalid-feedback">
                             {{ $errors->first('slug') }}
@@ -86,4 +86,15 @@
             </form>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+@parent
+<script>
+    document.getElementById('project_name').addEventListener('input', function() {
+        const name = this.value;
+        const slug = name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\-]/g, '');
+        document.getElementById('slug').value = slug;
+    });
+</script>
 @endsection
