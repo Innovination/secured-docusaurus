@@ -31,6 +31,21 @@
                     <span class="help-block">{{ trans('cruds.project.fields.slug_helper') }}</span>
                 </div>
                 <div class="form-group">
+                    <label class="required" for="status">{{ trans('cruds.project.fields.status') }}</label>
+                    <select class="form-control {{ $errors->has('status') ? 'is-invalid' : '' }}" name="status" id="status" required>
+                        <option value="" disabled {{ old('status') === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
+                        <option value="Pending" {{ old('status') === 'Pending' ? 'selected' : '' }}>Pending</option>
+                        <option value="In Progress" {{ old('status') === 'In Progress' ? 'selected' : '' }}>In Progress</option>
+                        <option value="Completed" {{ old('status') === 'Completed' ? 'selected' : '' }}>Completed</option>
+                    </select>
+                    @if ($errors->has('status'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('status') }}
+                        </div>
+                    @endif
+                    <span class="help-block">{{ trans('cruds.project.fields.status_helper') }}</span>
+                </div>
+                <div class="form-group">
                     <label for="allowed_users">{{ trans('cruds.project.fields.allowed_users') }}</label>
                     <div style="padding-bottom: 4px">
                         <span class="btn btn-info btn-xs select-all"

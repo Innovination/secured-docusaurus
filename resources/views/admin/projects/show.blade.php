@@ -49,6 +49,16 @@
                     </tr>
                     <tr>
                         <th>
+                            {{ trans('cruds.project.fields.status') }}
+                        </th>
+                        <td>
+                            <span class="badge" style="background-color: {{ $project->status === 'Pending' ? 'red' : ($project->status === 'In Progress' ? 'orange' : 'green') }}; color: white;">
+                                {{ $project->status }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             {{ trans('cruds.project.fields.allowed_users') }}
                         </th>
                         <td>

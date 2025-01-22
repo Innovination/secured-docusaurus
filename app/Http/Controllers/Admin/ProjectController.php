@@ -38,15 +38,12 @@ class ProjectController extends Controller
         $filePath = url('/') . '/token/' . $project->token . '/index.html';
         return view('admin.projects.detail', compact('filePath'));
     }
-
     public function index(Request $request)
     {
         abort_if(Gate::denies('project_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         if ($request->ajax()) {
-            $query = Project::with(['allowed_users'])->whereHas('allowed_users', function ($q) {
-                $q->where('id', auth()->user()->id);
-            })->select(sprintf('%s.*', (new Project)->table));
+            $query = Project::with(['allowed_users'])->select(sprintf('%s.*', (new Project)->table));
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
@@ -70,15 +67,24 @@ class ProjectController extends Controller
             $table->editColumn('id', function ($row) {
                 return $row->id ? $row->id : '';
             });
+
             $table->editColumn('project_name', function ($row) {
                 return $row->project_name ? $row->project_name : '';
             });
+
             $table->editColumn('slug', function ($row) {
                 return $row->slug ? $row->slug : '';
             });
+
             $table->editColumn('token', function ($row) {
                 return $row->token ? $row->token : '';
             });
+
+            $table->editColumn('status', function ($row) {
+                $color = $row->status === 'Pending' ? 'red' : ($row->status === 'In Progress' ? 'orange' : 'green');
+                return sprintf('<span class="badge" style="background-color: %s;">%s</span>', $color, $row->status);
+            });
+
             $table->editColumn('allowed_users', function ($row) {
                 $labels = [];
                 foreach ($row->allowed_users as $allowed_user) {
@@ -88,7 +94,7 @@ class ProjectController extends Controller
                 return implode(' ', $labels);
             });
 
-            $table->rawColumns(['actions', 'placeholder', 'allowed_users']);
+            $table->rawColumns(['actions', 'placeholder', 'status', 'allowed_users']);
 
             return $table->make(true);
         }
@@ -97,6 +103,65 @@ class ProjectController extends Controller
 
         return view('admin.projects.index', compact('users'));
     }
+
+    // public function index(Request $request)
+    // {
+    //     abort_if(Gate::denies('project_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+    //     if ($request->ajax()) {
+    //         $query = Project::with(['allowed_users'])->whereHas('allowed_users', function ($q) {
+    //             $q->where('id', auth()->user()->id);
+    //         })->select(sprintf('%s.*', (new Project)->table));
+    //         $table = Datatables::of($query);
+
+    //         $table->addColumn('placeholder', '&nbsp;');
+    //         $table->addColumn('actions', '&nbsp;');
+
+    //         $table->editColumn('actions', function ($row) {
+    //             $viewGate      = 'project_show';
+    //             $editGate      = 'project_edit';
+    //             $deleteGate    = 'project_delete';
+    //             $crudRoutePart = 'projects';
+
+    //             return view('partials.datatablesActions', compact(
+    //                 'viewGate',
+    //                 'editGate',
+    //                 'deleteGate',
+    //                 'crudRoutePart',
+    //                 'row'
+    //             ));
+    //         });
+
+    //         $table->editColumn('id', function ($row) {
+    //             return $row->id ? $row->id : '';
+    //         });
+    //         $table->editColumn('project_name', function ($row) {
+    //             return $row->project_name ? $row->project_name : '';
+    //         });
+    //         $table->editColumn('slug', function ($row) {
+    //             return $row->slug ? $row->slug : '';
+    //         });
+    //         $table->editColumn('token', function ($row) {
+    //             return $row->token ? $row->token : '';
+    //         });
+    //         $table->editColumn('allowed_users', function ($row) {
+    //             $labels = [];
+    //             foreach ($row->allowed_users as $allowed_user) {
+    //                 $labels[] = sprintf('<span class="label label-info label-many">%s</span>', $allowed_user->name);
+    //             }
+
+    //             return implode(' ', $labels);
+    //         });
+
+    //         $table->rawColumns(['actions', 'placeholder', 'allowed_users']);
+
+    //         return $table->make(true);
+    //     }
+
+    //     $users = User::get();
+
+    //     return view('admin.projects.index', compact('users'));
+    // }
 
     public function admin_view(Request $request)
     {
@@ -172,36 +237,75 @@ class ProjectController extends Controller
     //     return redirect()->route('admin.projects.index');
     // }
 
-    public function store(StoreProjectRequest $request)
-    {
-        $projectData = $request->all();
-        $projectData['token'] = Str::random(12);
+    // public function store(StoreProjectRequest $request)
+    // {
+    //     $projectData = $request->all();
+    //     $projectData['token'] = Str::random(12);
 
-        $project = Project::create($projectData);
-        $project->allowed_users()->sync($request->input('allowed_users', []));
+    //     $project = Project::create($projectData);
+    //     $project->allowed_users()->sync($request->input('allowed_users', []));
 
-        return redirect()->route('admin.projects.index');
-    }
+    //     return redirect()->route('admin.projects.index');
+    // }
 
-    public function edit(Project $project)
-    {
-        abort_if(Gate::denies('project_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    // public function edit(Project $project)
+    // {
+    //     abort_if(Gate::denies('project_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $allowed_users = User::pluck('name', 'id');
+    //     $allowed_users = User::pluck('name', 'id');
 
-        $project->load('allowed_users');
+    //     $project->load('allowed_users');
 
-        return view('admin.projects.edit', compact('allowed_users', 'project'));
-    }
+    //     return view('admin.projects.edit', compact('allowed_users', 'project'));
+    // }
 
-    public function update(UpdateProjectRequest $request, Project $project)
-    {
-        $project->update($request->all());
-        $project->allowed_users()->sync($request->input('allowed_users', []));
+    // public function update(UpdateProjectRequest $request, Project $project)
+    // {
+    //     $project->update($request->all());
+    //     $project->allowed_users()->sync($request->input('allowed_users', []));
 
-        return redirect()->route('admin.projects.index');
-    }
+    //     return redirect()->route('admin.projects.index');
+    // }
 
+
+
+public function store(StoreProjectRequest $request)
+{
+    $projectData = $request->all();
+    $projectData['token'] = Str::random(12);
+
+    // Ensure the 'status' field is handled correctly
+    $projectData['status'] = $request->input('status', 'Pending'); // Default to 'Pending' if not provided
+
+    $project = Project::create($projectData);
+    $project->allowed_users()->sync($request->input('allowed_users', []));
+
+    return redirect()->route('admin.projects.index');
+}
+
+public function edit(Project $project)
+{
+    abort_if(Gate::denies('project_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+    $allowed_users = User::pluck('name', 'id');
+
+    $project->load('allowed_users');
+
+    return view('admin.projects.edit', compact('allowed_users', 'project'));
+}
+
+public function update(UpdateProjectRequest $request, Project $project)
+{
+    $projectData = $request->all();
+
+    // Ensure the 'status' field is updated
+    $projectData['status'] = $request->input('status', $project->status); // Keep the current status if not provided
+
+    $project->update($projectData);
+    $project->allowed_users()->sync($request->input('allowed_users', []));
+
+    return redirect()->route('admin.projects.index');
+}
     public function show(Project $project)
     {
         abort_if(Gate::denies('project_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');

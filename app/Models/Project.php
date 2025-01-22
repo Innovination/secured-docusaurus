@@ -23,6 +23,7 @@ class Project extends Model
         'project_name',
         'slug',
         'token',
+        'status',
         'created_at',
         'updated_at',
         'deleted_at',
