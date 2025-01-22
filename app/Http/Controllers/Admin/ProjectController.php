@@ -202,6 +202,11 @@ class ProjectController extends Controller
             $table->editColumn('token', function ($row) {
                 return $row->token ? $row->token : '';
             });
+            $table->editColumn('status', function ($row) {
+                // $color = $row->status === 'Pending' ? 'red' : ($row->status === 'In Progress' ? 'orange' : 'green');
+                // return sprintf('<span class="badge" style="background-color: %s;">%s</span>', $color, $row->status);
+                return $row->status ? $row->status : '';
+            });
             $table->editColumn('allowed_users', function ($row) {
                 $labels = [];
                 foreach ($row->allowed_users as $allowed_user) {

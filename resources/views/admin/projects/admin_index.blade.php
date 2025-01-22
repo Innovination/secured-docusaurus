@@ -22,6 +22,9 @@
 
                     </th>
                     <th>
+                        {{ trans('global.actions') }}
+                    </th>
+                    <th>
                         {{ trans('cruds.project.fields.id') }}
                     </th>
                     <th>
@@ -31,13 +34,15 @@
                         {{ trans('cruds.project.fields.slug') }}
                     </th>
                     <th>
-                        {{ trans('cruds.project.fields.allowed_users') }}
+                        {{ trans('cruds.project.fields.status') }}
                     </th>
                     <th>
-                        &nbsp;
+                        {{ trans('cruds.project.fields.allowed_users') }}
                     </th>
                 </tr>
                 <tr>
+                    <td>
+                    </td>
                     <td>
                     </td>
                     <td>
@@ -52,12 +57,18 @@
                     <td>
                         <select class="search">
                             <option value>{{ trans('global.all') }}</option>
+                            <option value="Pending">Pending</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="search">
+                            <option value>{{ trans('global.all') }}</option>
                             @foreach($users as $key => $item)
                                 <option value="{{ $item->name }}">{{ $item->name }}</option>
                             @endforeach
                         </select>
-                    </td>
-                    <td>
                     </td>
                 </tr>
             </thead>
@@ -112,20 +123,28 @@
     ajax: "{{ route('admin.projects.admin_view') }}",
     columns: [
       { data: 'placeholder', name: 'placeholder' },
-{ data: 'id', name: 'id' },
-{ data: 'project_name', name: 'project_name' },
-{ 
-    data: 'slug', 
-    name: 'slug',
-    render: function ( data, type, row ) {
-        return '<a href="/admin/project/' + row.slug + '" target="_blank">' + data + '</a>';
-    }
-},
-{ data: 'allowed_users', name: 'allowed_users.name' },
-{ data: 'actions', name: '{{ trans('global.actions') }}' }
+      { data: 'actions', name: '{{ trans('global.actions') }}' },
+      { data: 'id', name: 'id' },
+      { data: 'project_name', name: 'project_name' },
+      {
+          data: 'slug',
+          name: 'slug',
+          render: function ( data, type, row ) {
+              return '<a href="/admin/project/' + row.slug + '" target="_blank">' + data + '</a>';
+          }
+      },
+      {
+          data: 'status',
+          name: 'status',
+          render: function (data, type, row) {
+              let color = data === 'Pending' ? 'red' : (data === 'In Progress' ? 'orange' : 'green');
+              return `<span class="badge" style="background-color: ${color}; color: white;">${data}</span>`;
+          }
+      },
+      { data: 'allowed_users', name: 'allowed_users.name' }
     ],
     orderCellsTop: true,
-    order: [[ 1, 'desc' ]],
+    order: [[ 2, 'desc' ]],
     pageLength: 100,
   };
   let table = $('.datatable-Project').DataTable(dtOverrideGlobals);
@@ -133,7 +152,7 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
-  
+
 let visibleColumnsIndexes = null;
 $('.datatable thead').on('input', '.search', function () {
       let strict = $(this).attr('strict') || false
