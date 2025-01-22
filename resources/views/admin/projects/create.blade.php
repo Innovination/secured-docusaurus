@@ -46,6 +46,16 @@
                     <span class="help-block">{{ trans('cruds.project.fields.status_helper') }}</span>
                 </div>
                 <div class="form-group">
+                    <label for="remarks">{{ trans('cruds.project.fields.remarks') }}</label>
+                    <textarea class="form-control {{ $errors->has('remarks') ? 'is-invalid' : '' }}" name="remarks" id="remarks">{{ old('remarks') }}</textarea>
+                    @if ($errors->has('remarks'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('remarks') }}
+                        </div>
+                    @endif
+                    <span class="help-block">{{ trans('cruds.project.fields.remarks_helper') }}</span>
+                </div>
+                <div class="form-group">
                     <label for="allowed_users">{{ trans('cruds.project.fields.allowed_users') }}</label>
                     <div style="padding-bottom: 4px">
                         <span class="btn btn-info btn-xs select-all"

@@ -36,6 +36,9 @@
                         {{ trans('cruds.project.fields.status') }}
                     </th>
                     <th>
+                        {{ trans('cruds.project.fields.remarks') }}
+                    </th>
+                    <th>
                         {{ trans('cruds.project.fields.allowed_users') }}
                     </th>
                 </tr>
@@ -60,6 +63,9 @@
                             <option value="In Progress">In Progress</option>
                             <option value="Completed">Completed</option>
                         </select>
+                    </td>
+                    <td>
+                        <input class="search" type="text" placeholder="{{ trans('global.search') }}">
                     </td>
                     <td>
                         <select class="search">
@@ -138,6 +144,7 @@
               return `<span class="badge" style="background-color: ${color}; color: white;">${data}</span>`;
           }
       },
+      { data: 'remarks', name: 'remarks' },
       { data: 'allowed_users', name: 'allowed_users.name' }
     ],
     orderCellsTop: true,

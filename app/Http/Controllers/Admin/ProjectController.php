@@ -85,6 +85,9 @@ class ProjectController extends Controller
                 // return sprintf('<span class="badge" style="background-color: %s;">%s</span>', $color, $row->status);
                 return $row->status ? $row->status : '';
             });
+            $table->editColumn('remarks', function ($row) {
+                return $row->remarks ? $row->remarks : '';
+            });
 
             $table->editColumn('allowed_users', function ($row) {
                 $labels = [];
@@ -207,6 +210,9 @@ class ProjectController extends Controller
                 // return sprintf('<span class="badge" style="background-color: %s;">%s</span>', $color, $row->status);
                 return $row->status ? $row->status : '';
             });
+            $table->editColumn('remarks', function ($row) {
+                return $row->remarks ? $row->remarks : '';
+            });
             $table->editColumn('allowed_users', function ($row) {
                 $labels = [];
                 foreach ($row->allowed_users as $allowed_user) {
@@ -282,6 +288,7 @@ public function store(StoreProjectRequest $request)
 
     // Ensure the 'status' field is handled correctly
     $projectData['status'] = $request->input('status', 'Pending'); // Default to 'Pending' if not provided
+    $projectData['remarks'] = $request->input('remarks', ''); // Default to '' if not provided
 
     $project = Project::create($projectData);
     $project->allowed_users()->sync($request->input('allowed_users', []));
@@ -306,6 +313,7 @@ public function update(UpdateProjectRequest $request, Project $project)
 
     // Ensure the 'status' field is updated
     $projectData['status'] = $request->input('status', $project->status); // Keep the current status if not provided
+    $projectData['remarks'] = $request->input('remarks', $project->remarks); // Keep the current remarks if not provided
 
     $project->update($projectData);
     $project->allowed_users()->sync($request->input('allowed_users', []));

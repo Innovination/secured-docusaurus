@@ -59,6 +59,14 @@
                     </tr>
                     <tr>
                         <th>
+                            {{ trans('cruds.project.fields.remarks') }}
+                        </th>
+                        <td>
+                            {{ $project->remarks }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             {{ trans('cruds.project.fields.allowed_users') }}
                         </th>
                         <td>

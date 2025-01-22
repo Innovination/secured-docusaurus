@@ -86,6 +86,9 @@ return [
             'deleted_at'           => 'Deleted at',
             'deleted_at_helper'    => ' ',
             'status'               => 'Status ',
+            'status_at_helper'               => ' ',
+            'remarks'     => 'Remarks',
+            'remarks_at_helper'     => ' '
         ],
     ],
 
