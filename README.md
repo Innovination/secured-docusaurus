@@ -26,7 +26,8 @@ By default, Docusaurus serves documentation **publicly**, which is **not ideal f
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-org/secure-docs-portal.git
+git clone https://github.com/Innovination/secured-docusaurus.git
+
 cd secure-docs-portal
 ```
 
