@@ -69,6 +69,56 @@ public/token/a1b2c3d4e5f6/
 * Users must be authenticated to access the documentation at:
 
 
+---
+
+## 📦 Deployment Workflow
+
+For your documentation to be visible under the correct secure path, you **must ensure the Docusaurus build is uploaded to the correct token folder**.
+
+You have two options:
+
+### 🔁 Option 1: Automated Deployment (Recommended)
+
+Set up a **build pipeline** (CI/CD) to:
+
+1. Build your Docusaurus project using:
+
+   ```bash
+   npm run build
+   ```
+2. Deploy the contents of the `build/` directory to the appropriate token folder on your server:
+
+   ```
+   public/token/{token}/
+   ```
+
+This ensures changes to the documentation are reflected automatically without manual intervention.
+
+### 🧷 Option 2: Manual Upload
+
+If a CI/CD pipeline is not configured:
+
+1. Run the build command manually inside your `docs/` folder:
+
+   ```bash
+   npm run build
+   ```
+2. Manually copy the generated build files to the appropriate token directory on your Laravel server:
+
+   ```bash
+   cp -r docs/build/* public/token/{token}/
+   ```
+
+---
+
+## 🔔 Important Note
+
+> 🚨 If the `build/` is **not present in the expected `public/token/{token}` directory**, the documentation page will not be accessible or will result in a 404.
+
+Make sure to either automate this process or ensure manual uploads are done correctly after each documentation update.
+
+---
+
 
 ## 🤝 Collaborate With Us
 
